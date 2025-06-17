@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="~{fragments/head :: head('Books')}" />
+
+<body>
+    <main class="container">
+        <section class="title row">
+            <div class="col-12">
+                <h1 class="text-center">
+                    Single book
+                </h1>
+            </div>
+        </section>
+
+        <section class="book row justify-content-center" th:object="${book}">
+            <article class="col-6 card">
+                <img th:src="*{imageUrl}" class="card-img-top w-25" alt="...">
+                <div class="card-body">
+                    <h1 class="card-title">
+                        [[*{title}]] by [[*{author}]]
+                    </h1>
+                    <h2 class="card-subtitle">
+                        ISBN: [[*{isbn}]]
+                    </h2>
+                </div>
+                <div class="card-footer">
+                    <p>
+                        Published by [[*{publisher}]] on [[*{publicationDate}]], [[*{numberOfCopies}]] times.
+                    </p>
+                </div>
+            </article>
+        </section>
+    </main>
+
+</body>
+
+</html>

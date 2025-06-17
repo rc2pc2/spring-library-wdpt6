@@ -4,13 +4,26 @@
 <head th:replace="~{fragments/head :: head('Books')}" />
 
 <body>
+    <header>
+        <nav th:replace="~{fragments/navbar :: navbar('Spring Library WDPT6')}" />
+    </header>
+    
     <main class="container">
         <section class="title row">
             <div class="col-12">
                 <h1 class="text-center">
-                    Books
+                    Book
                 </h1>
             </div>
+        </section>
+
+        <section class="search-bar row justify-content-center">
+            <form th:action="@{/books}" method="GET" class="col-12">
+                <div class="input-group">
+                    <input type="search" name="keyword" id="book-search-input" class="form-control" >
+                    <button class="btn btn-primary btn-lg" type="submit">Filter</button>
+                </div>
+            </form>
         </section>
 
         <section class="books">
@@ -24,17 +37,21 @@
                         <th scope="col">Publisher</th>
                         <th scope="col">Publication Date</th>
                         <th scope="col">Number of copies</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="book : ${books}" th:object="${book}">
-                        <td>[[*{id}]]</dh>
-                        <td>[[*{title}]]</dh>
-                        <td>[[*{author}]]</dh>
-                        <td>[[*{isbn}]]</dh>
-                        <td>[[*{publisher}]]</dh>
-                        <td>[[*{publicationDate}]]</dh>
-                        <td>[[*{numberOfCopies}]]</dh>
+                        <td>[[*{id}]]</td>
+                        <td>[[*{title}]]</td>
+                        <td>[[*{author}]]</td>
+                        <td>[[*{isbn}]]</td>
+                        <td>[[*{publisher}]]</td>
+                        <td>[[*{publicationDate}]]</td>
+                        <td>[[*{numberOfCopies}]]</td>
+                        <td>
+                            <a th:href="@{|/books/*{id}|}" class="btn btn-primary btn-sm">View</a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
