@@ -7,7 +7,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "books") 
@@ -17,16 +23,34 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank(message = "Title must not be null, blank or empty")
     private String title;
+
+    @NotBlank(message = "Author must not be null, blank or empty")
     private String author;
 
-    @Column(name = "isbn_code", length = 13, nullable = false)
+    @Column(name = "isbn_code")
+    @NotNull(message = "ISBN code must not be null, blank or empty")
+    @Size( min = 13, max = 13, message = "The ISBN code must be made of 13 characters")
     private String isbn;
     
+    @Lob
+    @NotBlank(message = "Image URL must not be null, blank or empty")
     private String imageUrl;
+    
+    @NotBlank(message = "Publisher must not be null, blank or empty")
     private String publisher;
+
+    @Lob
+    @Size(max = 2000, message = "Synopsis cannot be longer thatn 2000 characters")
     private String synopsis;
+    
+    @NotNull(message = "Publication date cannot be null")
+    @PastOrPresent(message = "Publication date must be in the present or in the past")
     private LocalDate publicationDate;
+    
+    @NotNull(message = "Number of copies cannot be null")
+    @PositiveOrZero(message = "Number of copies must be at least zero")
     private Integer numberOfCopies;
 
     public String getImageUrl() {
