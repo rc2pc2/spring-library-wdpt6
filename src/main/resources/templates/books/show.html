@@ -4,6 +4,10 @@
 <head th:replace="~{fragments/head :: head('Books')}" />
 
 <body>
+    <header>
+        <nav th:replace="~{fragments/navbar :: navbar('Spring Library WDPT6')}" />
+    </header>
+
     <main class="container">
         <section class="title row">
             <div class="col-12">
@@ -33,6 +37,10 @@
         </section>
     </main>
 
+
+    <th:block th:replace="~{fragments/footer :: scripts}">
+        <!-- Scripts -->
+    </th:block>
 </body>
 
 </html>

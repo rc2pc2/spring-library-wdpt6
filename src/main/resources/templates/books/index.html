@@ -11,17 +11,20 @@
     <main class="container">
         <section class="title row">
             <div class="col-12">
-                <h1 class="text-center">
-                    Book
+                <h1 class="text-center fw-bold mb-3">
+                    Books Management System
                 </h1>
             </div>
         </section>
 
-        <section class="search-bar row justify-content-center">
-            <form th:action="@{/books}" method="GET" class="col-12">
-                <div class="input-group">
+        <section class="search-bar row justify-content-center mb-3">
+            <form th:action="@{/books}" method="GET" class="col-12 d-flex justify-content-between">
+                <div class="creation-button">
+                    <a th:href="@{/books/create}" class="btn btn-primary">Create a new book</a>
+                </div>
+                <div class="input-group w-25">
                     <input type="search" name="keyword" id="book-search-input" class="form-control" >
-                    <button class="btn btn-primary btn-lg" type="submit">Filter</button>
+                    <button class="btn btn-primary btn" type="submit">Search</button>
                 </div>
             </form>
         </section>
@@ -50,7 +53,9 @@
                         <td>[[*{publicationDate}]]</td>
                         <td>[[*{numberOfCopies}]]</td>
                         <td>
-                            <a th:href="@{|/books/*{id}|}" class="btn btn-primary btn-sm">View</a>
+                            <a th:href="@{|/books/*{id}|}" class="btn btn-primary btn-sm">Show</a>
+                            <a th:href="@{|/books/*{id}|}" class="btn btn-success disabled btn-sm">Edit</a>
+                            <a th:href="@{|/books/*{id}|}" class="btn btn-warning disabled btn-sm">Delete</a>
                         </td>
                     </tr>
                 </tbody>
@@ -62,6 +67,11 @@
         </section>
     </main>
 
+
+
+    <th:block th:replace="~{fragments/footer :: scripts}">
+        <!-- Scripts -->
+    </th:block>
 </body>
 
 </html>
