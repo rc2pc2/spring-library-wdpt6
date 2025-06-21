@@ -7,7 +7,7 @@
     <header>
         <nav th:replace="~{fragments/navbar :: navbar('Spring Library WDPT6')}" />
     </header>
-    
+
     <main class="container">
         <section class="title row">
             <div class="col-12">
@@ -23,7 +23,7 @@
                     <a th:href="@{/books/create}" class="btn btn-primary">Create a new book</a>
                 </div>
                 <div class="input-group w-25">
-                    <input type="search" name="keyword" id="book-search-input" class="form-control" >
+                    <input type="search" name="keyword" id="book-search-input" class="form-control">
                     <button class="btn btn-primary btn" type="submit">Search</button>
                 </div>
             </form>
@@ -54,8 +54,42 @@
                         <td>[[*{numberOfCopies}]]</td>
                         <td>
                             <a th:href="@{|/books/*{id}|}" class="btn btn-primary btn-sm">Show</a>
-                            <a th:href="@{|/books/*{id}|}" class="btn btn-success disabled btn-sm">Edit</a>
-                            <a th:href="@{|/books/*{id}|}" class="btn btn-warning disabled btn-sm">Delete</a>
+                            <a th:href="@{|/books/edit/*{id}|}" class="btn btn-success btn-sm">Edit</a>
+
+                             <!-- * Il BOTTONE che triggera la modale -->
+                            <button type="button" class="d-inline btn btn-warning btn-sm" data-bs-toggle="modal"
+                                th:data-bs-target="'#delete-modal-' + *{id}">
+                                Delete
+                            </button>
+
+                            <!-- La modale nascosta che appare solo quando viene cliccato il bottone relativo -->
+                            <div class="modal fade" th:id="'delete-modal-' + *{id}" data-bs-backdrop="static"
+                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Deletion of <strong>"[[*{title}]]"</strong></h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>
+                                                Are you sure that you want to delete the book with title <strong>"[[*{title}]]"</strong>, written by <em>[[*{author}]]</em> and id: [[*{id}]]
+                                            </p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <form th:action="@{|/books/delete/*{id}|}" method="post" class="d-inline">
+                                                <button type="submit" class="btn btn-danger btn">Delete</button>
+                                            </form> 
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
                         </td>
                     </tr>
                 </tbody>

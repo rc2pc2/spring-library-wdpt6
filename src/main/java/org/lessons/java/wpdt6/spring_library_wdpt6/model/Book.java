@@ -24,9 +24,11 @@ public class Book {
     private Integer id;
 
     @NotBlank(message = "Title must not be null, blank or empty")
+    @Size(min = 1, message = "Title must have at least one characters")
     private String title;
 
     @NotBlank(message = "Author must not be null, blank or empty")
+    @Size(min = 2, message = "Author must have at least two characters")
     private String author;
 
     @Column(name = "isbn_code")

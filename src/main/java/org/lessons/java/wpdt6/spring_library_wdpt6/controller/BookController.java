@@ -65,4 +65,34 @@ public class BookController {
 
         return "redirect:/books";
     }
+
+    @GetMapping("/edit/{id}") // ! ...com/books/edit/11
+    public String edit(@PathVariable("id") Integer id, Model model){
+        model.addAttribute("book", bookRepository.findById(id).get());
+        return "books/edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String update(@PathVariable("id") Integer id, @Valid @ModelAttribute("book") Book formBook, BindingResult bindingResult, Model model){
+
+        //  ! Validazione dei dati
+        if (bindingResult.hasErrors()){
+            return "/books/edit";
+        }
+
+        // Salva il libro nel DB
+        bookRepository.save(formBook);
+
+        return "redirect:/books";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Integer id, Model model){
+
+        // * cancella la risorsa dal DB
+        bookRepository.deleteById(id);
+
+        return "redirect:/books";
+    }
+
 }
