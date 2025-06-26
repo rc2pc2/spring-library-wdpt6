@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="~{fragments/head :: head('borrowings')}" />
+
+<body>
+    <header>
+        <nav th:replace="~{fragments/navbar :: navbar('Spring Library WDPT6')}" />
+    </header>
+
+    <main class="container">
+        <section class="title row">
+            <div class="col-12">
+                <h1 class="text-center fw-bold mb-3">
+                    Updating borrowing [[${borrowing.book.title}]]
+                </h1>
+            </div>
+        </section>
+
+        <section class="borrowings row">
+            <div class="col-12 text-center">
+                <ul>
+                    <li th:each="err : ${#fields.allErrors()}" th:text="${err}">
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12">
+                <form th:action="@{|/borrowings/*{id}|}" method="POST" th:object="${borrowing}" id="borrowing-creation-form">
+
+                    <input type="hidden" th:field="*{book}" id="book-id">
+
+                    <div class="mb-3">
+                        <label for="borrowing-date" class="form-label">Borrowing Date:</label>
+                        <input id="borrowing-date" type="date" class="form-control mb-3" th:field="*{borrowingDate}"
+                           th:errorClass="is-invalid"  required >
+                        <div th:if="${#fields.hasErrors('borrowingDate')}" class="invalid-feedback" >
+                            <ul>
+                                <li th:each="err : ${#fields.errors('borrowingDate')}" th:text="${err}"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="return-date" class="form-label">Return Date:</label>
+                        <input id="return-date" type="date" class="form-control mb-3" th:field="*{returnDate}"
+                           th:errorClass="is-invalid" >
+                        <div th:if="${#fields.hasErrors('returnDate')}" class="invalid-feedback" >
+                            <ul>
+                                <li th:each="err : ${#fields.errors('returnDate')}" th:text="${err}"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notes:</label>
+                        <textarea id="notes" class="form-control mb-3" th:field="*{notes}" rows="5"></textarea>
+                        <div th:if="${#fields.hasErrors('notes')}" class="invalid-feedback" >
+                            <ul>
+                                <li th:each="err : ${#fields.errors('notes')}" th:text="${err}"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary">Update borrowing</button>
+                        <button type="reset" class="btn btn-warning">Reset</button>
+                    </div>
+                </form>
+            </div>
+
+            
+        </section>
+    </main>
+
+
+
+    <th:block th:replace="~{fragments/footer :: scripts}">
+        <!-- Scripts -->
+    </th:block>
+</body>
+
+</html>

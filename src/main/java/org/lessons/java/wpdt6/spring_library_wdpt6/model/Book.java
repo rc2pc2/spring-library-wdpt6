@@ -1,6 +1,9 @@
 package org.lessons.java.wpdt6.spring_library_wdpt6.model;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import org.hibernate.annotations.Formula;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -54,6 +58,36 @@ public class Book {
     @NotNull(message = "Number of copies cannot be null")
     @PositiveOrZero(message = "Number of copies must be at least zero")
     private Integer numberOfCopies;
+
+    @Formula("(SELECT books.number_of_copies - count(b.id) "
+    + "FROM books "
+    + "LEFT OUTER JOIN `borrowings` b "
+    + "ON books.id = b.book_id " 
+    + "AND b.return_date IS NULL "
+    + "WHERE books.id = id)")
+    private Integer availableCopies;
+
+    public Integer getAvailableCopies() {
+        return this.availableCopies;
+    }
+
+    public boolean isAvailable(){
+        return this.availableCopies > 0;
+    }
+
+    // ! tipo di relazione
+    @OneToMany( mappedBy = "book")
+    private List<Borrowing> borrowings;
+
+
+    public List<Borrowing> getBorrowings() {
+        return this.borrowings;
+    }
+
+    public void setBorrowings(List<Borrowing> borrowings) {
+        this.borrowings = borrowings;
+    }
+
 
     public String getImageUrl() {
         return this.imageUrl;

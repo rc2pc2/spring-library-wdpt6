@@ -17,7 +17,7 @@
             </div>
         </section>
 
-        <section class="book row justify-content-center" th:object="${book}">
+        <section class="book row justify-content-center mb-5" th:object="${book}">
             <article class="col-6 card">
                 <img th:src="*{imageUrl}" class="card-img-top w-25" alt="...">
                 <div class="card-body">
@@ -34,6 +34,72 @@
                     </p>
                 </div>
             </article>
+        </section>
+
+        <section class="borrowings row justify-content-center">
+            <div class="col-6 ">
+            <table class="table table-hover " th:if="${book.borrowings.size() > 0}">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Borrowing Date</th>
+                        <th scope="col">Return Date</th>
+                        <th scope="col">Note</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="borrowing : ${book.borrowings}" th:object="${borrowing}">
+                        <td>[[*{id}]]</td>
+                        <td>[[*{borrowingDate}]]</td>
+                        <td>[[*{returnDate}]]</td>
+                        <td>[[*{notes}]]</td>
+                        <td>
+                            <a th:href="@{|/borrowings/*{id}/edit|}" class="btn btn-success btn-sm">Edit</a>
+
+                             <!-- * Il BOTTONE che triggera la modale -->
+                            <button type="button" class="d-inline btn btn-warning btn-sm" data-bs-toggle="modal"
+                                th:data-bs-target="'#delete-modal-' + *{id}">
+                                Delete
+                            </button>
+
+                            <!-- La modale nascosta che appare solo quando viene cliccato il bottone relativo -->
+                            <div class="modal fade" th:id="'delete-modal-' + *{id}" data-bs-backdrop="static"
+                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Deletion of borrowing of the book with title <strong>"[[${book.title}]]"</strong> borrowed on the <strong>[[*{borrowingDate}]]</strong></h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>
+                                                Are you sure that you want to delete the book with title <strong>"[[${book.title}]]"</strong> borrowed on the <strong>[[*{borrowingDate}]]</strong> and id: [[*{id}]]?
+                                            </p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <form th:action="@{|/borrowings/delete/*{id}|}" method="post" class="d-inline">
+                                                <button type="submit" class="btn btn-danger btn">Delete</button>
+                                            </form> 
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+
+            <h2 class="text-center text-primary" th:unless="${book.borrowings.size() > 0}">
+                This book has never been borrowed
+            </h2>
         </section>
     </main>
 

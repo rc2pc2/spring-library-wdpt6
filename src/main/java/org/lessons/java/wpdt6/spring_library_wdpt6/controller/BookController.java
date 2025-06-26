@@ -1,10 +1,15 @@
 package org.lessons.java.wpdt6.spring_library_wdpt6.controller;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.lessons.java.wpdt6.spring_library_wdpt6.model.Book;
+import org.lessons.java.wpdt6.spring_library_wdpt6.model.Borrowing;
 import org.lessons.java.wpdt6.spring_library_wdpt6.repository.BookRepository;
+import org.lessons.java.wpdt6.spring_library_wdpt6.repository.BorrowingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.Valid;
 
@@ -24,6 +30,9 @@ public class BookController {
     
     @Autowired // * forziamo la dipendency injection
     private BookRepository bookRepository;
+
+    @Autowired // * forziamo la dipendency injection
+    private BorrowingRepository borrowingRepository;
 
     @GetMapping
     public String index(Model model, @RequestParam( name = "keyword", required = false) String keyword){
@@ -89,10 +98,36 @@ public class BookController {
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable("id") Integer id, Model model){
 
+        Book bookToDelete = bookRepository.findById(id).get();
+
+        for (Borrowing borrowing : bookToDelete.getBorrowings()) {
+            borrowingRepository.delete(borrowing);
+        }
+
         // * cancella la risorsa dal DB
-        bookRepository.deleteById(id);
+        bookRepository.delete(bookToDelete);
+
 
         return "redirect:/books";
     }
+
+
+    @GetMapping("/{id}/borrow") // ! ...com/books/create
+    public String borrow(@PathVariable("id") Integer id, Model model){
+
+        Optional<Book> bookOptional = bookRepository.findById(id);
+        if (bookOptional.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no book with id " + id + ", so you cannot borrow it!");
+        }
+
+        model.addAttribute("book", bookOptional.get());
+        Borrowing borrowing = new Borrowing();
+        borrowing.setBook(bookOptional.get());
+        borrowing.setBorrowingDate(LocalDate.now());
+        model.addAttribute("borrowing", borrowing);
+
+        return "borrowings/create";
+    }
+
 
 }
