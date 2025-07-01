@@ -48,6 +48,24 @@
                         </div>
                     </div>
 
+                    
+                    <div>
+                        <label for="" class="form-label">Categories:</label>
+                    </div>
+                    <div class="mb-3" th:each="category : ${categories}">
+                        <input type="checkbox" class="form-check-input" id="'category-' + ${category.id}" 
+                            th:field="${book.categories}" 
+                            th:value="${category.id}">
+                        <label for="author" class="form-check-label">[[${category.name}]]</label>
+                        <!-- <input id="author" type="text" class="form-control mb-3" th:field="*{author}" th:errorClass="is-invalid"  required > -->
+                        
+                        <!-- <div th:if="${#fields.hasErrors('author')}" class="invalid-feedback" >
+                            <ul>
+                                <li th:each="err : ${#fields.errors('author')}" th:text="${err}"></li>
+                            </ul>
+                        </div> -->
+                    </div>
+
 
                     <div class="mb-3">
                         <label for="publication-date" class="form-label">Publication Date:</label>

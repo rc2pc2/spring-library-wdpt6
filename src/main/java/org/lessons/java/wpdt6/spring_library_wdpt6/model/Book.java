@@ -2,6 +2,7 @@ package org.lessons.java.wpdt6.spring_library_wdpt6.model;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.annotations.Formula;
 
@@ -10,7 +11,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -78,6 +82,25 @@ public class Book {
     // ! tipo di relazione
     @OneToMany( mappedBy = "book")
     private List<Borrowing> borrowings;
+
+    @ManyToMany
+    @JoinTable(
+      name = "book_category",
+      joinColumns = @JoinColumn(name = "book_id"),
+      inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories;
+
+    public void setAvailableCopies(Integer availableCopies) {
+        this.availableCopies = availableCopies;
+    }
+
+    public Set<Category> getCategories() {
+        return this.categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
 
 
     public List<Borrowing> getBorrowings() {
