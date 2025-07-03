@@ -11,6 +11,7 @@ import org.lessons.java.wpdt6.spring_library_wdpt6.repository.BorrowingRepositor
 import org.lessons.java.wpdt6.spring_library_wdpt6.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,7 +40,7 @@ public class BookController {
     private CategoryRepository categoryRepository;
 
     @GetMapping
-    public String index(Model model, @RequestParam( name = "keyword", required = false) String keyword){
+    public String index(Authentication authentication, Model model, @RequestParam( name = "keyword", required = false) String keyword){
 
         // & Se qualcuno ha cercato, allora cerchiamo
         List<Book> books;
@@ -49,7 +50,10 @@ public class BookController {
         } else {
             books = bookRepository.findAll();
         }
+
+        // model.addAttribute("username", authentication.getName());
         model.addAttribute("books", books);
+        
         return "books/index";
     }
 

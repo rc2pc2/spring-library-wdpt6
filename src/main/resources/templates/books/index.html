@@ -19,7 +19,7 @@
 
         <section class="search-bar row justify-content-center mb-3">
             <form th:action="@{/books}" method="GET" class="col-12 d-flex justify-content-between">
-                <div class="creation-button">
+                <div class="creation-button" sec:authorize="hasAuthority('ADMIN')">
                     <a th:href="@{/books/create}" class="btn btn-primary">Create a new book</a>
                 </div>
                 <div class="input-group w-25">
@@ -57,10 +57,12 @@
                         <td>
                             <a th:classAppend="*{isAvailable()} ? '' :'disabled'" th:href="@{|/books/*{id}/borrow|}" class="btn btn-outline-primary btn-sm">Borrow</a>
                             <a th:href="@{|/books/*{id}|}" class="btn btn-primary btn-sm">Show</a>
-                            <a th:href="@{|/books/edit/*{id}|}" class="btn btn-success btn-sm">Edit</a>
+
+
+                            <a th:href="@{|/books/edit/*{id}|}" sec:authorize="hasAuthority('ADMIN')" class="btn btn-success btn-sm">Edit</a>
 
                              <!-- * Il BOTTONE che triggera la modale -->
-                            <button type="button" class="d-inline btn btn-warning btn-sm" data-bs-toggle="modal"
+                            <button sec:authorize="hasAuthority('ADMIN')" type="button" class="d-inline btn btn-warning btn-sm" data-bs-toggle="modal"
                                 th:data-bs-target="'#delete-modal-' + *{id}">
                                 Delete
                             </button>
