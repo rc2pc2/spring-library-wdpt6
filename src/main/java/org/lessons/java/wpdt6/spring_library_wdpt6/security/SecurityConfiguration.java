@@ -29,7 +29,7 @@ public class SecurityConfiguration {
 
     @Bean
     @SuppressWarnings("deprecation")
-    DaoAuthenticationProvider authenticationProvider() {
+    DaoAuthenticationProvider authenticationProvider() { 
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());

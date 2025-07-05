@@ -22,7 +22,7 @@
             <div class="user-details">
                 Logged user: <span sec:authentication="name" class="me-3"></span>
                 Roles: <span sec:authentication="principal.authorities" class="me-3"></span>
-                <a href="#" class="btn btn-primary">Logout</a>
+                <a th:href="@{/logout}" class="btn btn-primary">Logout</a>
             </div>
         </div>
     </nav>
